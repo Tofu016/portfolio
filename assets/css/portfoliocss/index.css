@@ -1,5 +1,3 @@
-/* assets/css/portfoliocss/index.css */
-
 body {
     font-family: "Space mono", monospace;
     margin: 0;
@@ -17,7 +15,7 @@ header {
 }
 
 #introduction {
-    padding: 150px 20px;
+    padding: 100px 20px;
     display: flex;
     justify-content: flex-start;
 }
@@ -45,7 +43,6 @@ header {
     text-align: justify;
 }
 
-/* Background container */
 .container {
     position: fixed;
     top: 0;
@@ -53,18 +50,45 @@ header {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    z-index: -1; /* Place behind all content */
-    background-color: #000; /* Optional: Add a background color */
+    z-index: -1;
+    background-color: #000;
 }
 
-/* Particles */
 .particle {
     position: absolute;
-    top: 50%; /* Start particles at the vertical center */
-    left: 50%; /* Start particles at the horizontal center */
-    transform: translate(-50%, -50%); /* Center particles exactly */
-    width: 5px; /* Width of the square particle */
-    height: 5px; /* Height of the square particle */
-    background-color: rgba(255, 255, 255, 0.8); /* Color of the particle */
-    border-radius: 0; /* Keep particles square */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 5px;
+    height: 5px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 0;
+}
+
+@media (max-width: 768px) {
+    .about {
+        max-width: 90%;
+        font-size: 1rem;
+        padding: 20px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .about p {
+        margin-bottom: 15px;
+        text-align: justify;
+    }
+}
+
+@media (max-width: 480px) {
+    .about {
+        font-size: 0.9rem;
+        line-height: 1.6;
+        padding: 15px;
+    }
+
+    .about p {
+        margin-bottom: 10px;
+        text-align: justify;
+    }
 }
