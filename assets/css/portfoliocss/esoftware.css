@@ -150,11 +150,6 @@ header {
     .tech-item img {
         width: 80px;
     }
-
-    .toggle-btn {
-        top: 10px;
-        padding: 8px 12px;
-    }
 }
 
 @media (max-width: 480px) {
@@ -170,10 +165,5 @@ header {
     .tech-item p {
         font-size: 0.5rem;
         margin-top: 10px;
-    }
-
-    .toggle-btn {
-        top: 30px;
-        padding: 6px 10px;
     }
 }
