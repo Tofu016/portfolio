@@ -24,12 +24,12 @@ header {
 
 .about {
     background-color: rgba(255, 255, 255, 0.8);
-    padding: 30px;
+    padding: 60px;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     text-align: center;
     max-width: 800px;
-    margin: 10px auto;
+    margin: 20px auto;
 }
 
 .face-container {
