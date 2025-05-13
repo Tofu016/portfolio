@@ -17,16 +17,14 @@ header {
 #introduction {
     padding: 35px 30px;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    flex-direction: column;
-    height: 85vh;           
     gap: 20px;
 }
 
 .about {
     background-color: rgba(255, 255, 255, 0.8);
-    padding: 60px;
+    padding: 40px;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     text-align: center;
@@ -140,7 +138,7 @@ header {
     position: fixed;
     top: 20px;
     left: 0;
-    background-color: grey;
+    background-color: gray;
     color: #fff;
     border: none;
     padding: 10px 15px;
