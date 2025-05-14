@@ -8,8 +8,9 @@ window.addEventListener('load', () => {
     minWidth: 200.00,
     scale: 1.00,
     scaleMobile: 1.00,
-    color: 0x84aa,
-    size: 0.80,
-    backgroundColor: 0x0
+    color: 0x0,
+    color2: 0xffffff,
+    size: 1.00,
+    backgroundColor: 0x107cef
   });
 });

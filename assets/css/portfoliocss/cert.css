@@ -7,8 +7,8 @@ body {
 }
 
 header {
-    background-color: black;
     color: white;
+    font-weight: bold;
     padding: 20px;
     text-align: center;
     font-size: 2rem;
@@ -20,7 +20,7 @@ header {
     left: 0;
     width: 250px;
     height: 100%;
-    background-color: darkgray;
+    background-color: rgba(0, 0, 0, 0.8);
     transform: translateX(-100%);
     transition: transform 0.3s ease;
 }
@@ -48,7 +48,23 @@ header {
 }
 
 .sidebar ul li a:hover {
-    background-color: #575757;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.toggle-btn {
+    position: fixed;
+    top: 20px;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: left 0.3s ease;
+}
+
+.sidebar.open + .toggle-btn {
+    left: 250px;
 }
 
 .section {
@@ -68,7 +84,7 @@ header {
 }
 
 .cert-item {
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.8);
     padding: 30px;
     border-radius: 8px;
     text-align: center;
@@ -94,23 +110,6 @@ header {
 .cert-item:hover {
     transform: translateY(-8px) scale(1.05);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-}
-
-
-.toggle-btn {
-    position: fixed;
-    top: 20px;
-    left: 0;
-    background-color: gray;
-    color: #fff;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    transition: left 0.3s ease;
-}
-
-.sidebar.open + .toggle-btn {
-    left: 250px;
 }
 
 #vanta-bg{

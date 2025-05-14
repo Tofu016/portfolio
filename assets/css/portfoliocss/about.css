@@ -7,19 +7,21 @@ body {
 }
 
 header {
-    background-color: black;
     color: white;
+    font-weight: bold;
     padding: 20px;
     text-align: center;
     font-size: 2rem;
 }
 
 #introduction {
-    padding: 35px 30px;
+    height: 82vh;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
     gap: 20px;
+    padding: 0;
 }
 
 .about {
@@ -46,7 +48,7 @@ header {
 
 .about p {
     text-align: justify;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     line-height: 1.8;
     margin-top: 20px;
 }
@@ -61,6 +63,7 @@ header {
     pointer-events: none;
 }
 
+/* start of unused content */
 .particle {
     position: absolute;
     top: 50%;
@@ -95,6 +98,7 @@ header {
     transition: opacity 1s ease-in-out;
     object-fit: cover;
 }
+/* end of unused content */
 
 .sidebar {
     position: fixed;
@@ -102,7 +106,7 @@ header {
     left: 0;
     width: 250px;
     height: 100%;
-    background-color: darkgray;
+    background-color: rgba(0, 0, 0, 0.8);
     z-index: 1000;
     transform: translateX(-100%);
     transition: transform 0.3s ease;
@@ -131,14 +135,14 @@ header {
 }
 
 .sidebar ul li a:hover {
-    background-color: #575757;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .toggle-btn {
     position: fixed;
     top: 20px;
     left: 0;
-    background-color: gray;
+    background-color: rgba(0, 0, 0, 0.8);
     color: #fff;
     border: none;
     padding: 10px 15px;
@@ -148,6 +152,10 @@ header {
 
 .sidebar.open + .toggle-btn {
     left: 250px;
+}
+
+.toggle-btn:hover {
+    background-color: #007bff;
 }
 
 @media (max-width: 768px) {
@@ -184,6 +192,11 @@ header {
 }
 
 @media (max-width: 480px) {
+    #introduction {
+        padding: 20px;
+        margin-top: 200px;
+    }
+
     #animated-image {
         width: 150px;
         height: 150px;
