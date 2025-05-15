@@ -141,7 +141,7 @@ header {
     position: fixed;
     top: 20px;
     left: 0;
-    background-color: gray;
+    background-color: rgba(0, 0, 0, 0.8);
     color: #fff;
     border: none;
     padding: 10px 15px;

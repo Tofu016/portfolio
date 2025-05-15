@@ -144,6 +144,32 @@ header {
     border-radius: 0;
 }
 
+@media (max-width: 1024px) {
+    .cert-container {
+        flex-wrap: wrap;
+        gap: 100px;
+        justify-content: center;
+        z-index: -1;
+    }
+
+    .cert-item {
+        width: 80%;
+        padding: 20px;
+    }
+
+    .cert-item img {
+        width: 100%;
+    }
+
+    .cert-item p {
+        font-size: 1rem;
+    }
+
+    .toggle-btn {
+        z-index: 1;
+    }
+}
+
 @media (max-width: 768px) {
     .cert-container {
         flex-wrap: wrap;

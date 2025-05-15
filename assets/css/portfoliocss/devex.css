@@ -105,8 +105,9 @@ header {
 }
 
 .tech-item img {
-    width: 100px;
-    height: auto;
+    width: 130px;
+    height: 130px;
+    object-fit: contain;
     border-radius: 5px;
     transition: transform 0.3s ease;
 }
@@ -157,6 +158,21 @@ header {
     height: 5px;
     background-color: rgba(255, 255, 255, 0.8);
     border-radius: 0;
+}
+
+@media (max-width: 1024px) {
+    .tech-items {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .tech-item {
+        text-align: center;
+        flex: 1 1 calc(50% - 20px);
+        max-width: calc(50% - 20px);
+    }
 }
 
 @media (max-width: 768px) {

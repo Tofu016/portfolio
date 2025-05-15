@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../css/photographercss/sshots.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <title>Cristopher Pondoc</title>
+</head>
+<body>
+    <div id="vanta-bg"></div>
+
+    <header>Sample Shots</header>
+
+    <!-- Buttons to toggle sections -->
+    <div class="button-container">
+        <button id="plane-btn" class="toggle-section-btn">Plane Shots <i class="bi bi-airplane-engines"></i></button>
+        <button id="people-btn" class="toggle-section-btn">Nature Shots <i class="bi bi-person-circle"></i></button>
+    </div>
+
+    <div class="sidebar">
+        <ul>
+            <li><a href="../../../index.html">Home <i class="bi bi-house-fill"></i></a></li>
+            <li><a href="../photographer/ABPhoto.html">About Me <i class="bi bi-file-earmark-person-fill"></i></a></li>
+            <li><a href="../photographer/Esoftware.html">Edit Apps <i class="bi bi-images"></i></a></li>
+            <li><a href="../photographer/sshots.html">Sample Shots <i class="bi bi-camera2"></i></a></li>
+            <li><a href="https://www.linkedin.com/in/cristopher-pondoc-b780ba2a8/" target="_blank">LinkedIn <i class="bi bi-linkedin"></i></a></li>
+            <li><a href="https://github.com/Tofu016" target="_blank">GitHub <i class="bi bi-github"></i></a></li>
+        </ul>
+    </div>
+
+    <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+
+    <!-- Plane Shots Section -->
+    <section id="planes" class="hidden">
+        <div class="tech-container">
+            <div class="tech-item">
+                <p>Airbus A380</p>
+                <img src="../../../images/multimedia/samples/planes/a380.jpg" alt="planepic" width="50">
+            </div>
+            <div class="tech-item">
+                <p>Malaysia Airlines</p>
+                <img src="../../../images/multimedia/samples/planes/MALAY.jpg" alt="planepic" width="50">
+            </div>
+            <div class="tech-item">
+                <p>United Airlines</p>
+                <img src="../../../images/multimedia/samples/planes/UNITE.jpg" alt="planepic" width="50">
+            </div>
+            <div class="tech-item">
+                <p>Philippine Airlines</p>
+                <img src="../../../images/multimedia/samples/planes/PAL.jpg" alt="planepic" width="50">
+            </div>
+            <div class="tech-item">
+                <p>Air Asia</p>
+                <img src="../../../images/multimedia/samples/planes/AASIA.jpg" alt="planepic" width="50">
+            </div>
+            <div class="tech-item">
+                <p>Cebu Pacific Air</p>
+                <img src="../../../images/multimedia/samples/planes/CEB.jpg" alt="planepic" width="50">
+            </div>
+        </div>
+    </section>
+
+    <!-- People Shots Section -->
+    <section id="people" class="hidden">
+        <div class="tech-container">
+            <div class="nature-pic">
+                <p>Taal</p>
+                <img src="../../../images/multimedia/samples/nature/taal-1.jpg" alt="naturepic" width="50">
+            </div>
+            <div class="nature-pic">
+                <p>Volcano</p>
+                <img src="../../../images/multimedia/samples/nature/taal-2.jpg" alt="naturepic" width="50">
+            </div>
+            <div class="nature-pic">
+                <p>Tagaytay</p>
+                <img src="../../../images/multimedia/samples/nature/taal-3.jpg" alt="naturepic" width="50">
+            </div>
+            <div class="nature-pic">
+                <p>30sec shutter</p>
+                <img src="../../../images/multimedia/samples/nature/sky-1.jpg" alt="naturepic" width="50">
+            </div>
+            <div class="nature-pic">
+                <p>Fluffy Clouds</p>
+                <img src="../../../images/multimedia/samples/nature/cloud-1.jpg" alt="naturepic" width="50">
+            </div>
+            <div class="nature-pic">
+                <p>Long Exposure</p>
+                <img src="../../../images/multimedia/samples/nature/stars-1.jpg" alt="naturepic" width="50">
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"></script>
+    <script src="../../js/vanta.init.js"></script>
+    <script src="../../js/sidebar.js"></script>
+    <script src="../../js/carousel.js"></script>
+    <script src="../../js/section-toggle.js"></script>
+
+</body>
+</html>

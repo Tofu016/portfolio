@@ -1,29 +1,53 @@
-const techContainer = document.querySelector('.tech-container');
-const techItems = document.querySelectorAll('.tech-item');
-let rotationAngle = 0; // Cumulative rotation angle
-const totalItems = techItems.length; // Get the total number of items
-const angle = 360 / totalItems; // Calculate the angle for each item
+// Plane Shots Carousel
+const planeContainer = document.querySelector('#planes .tech-container');
+const planeItems = document.querySelectorAll('#planes .tech-item');
+let planeRotationAngle = 0;
+const planeTotalItems = planeItems.length;
+const planeAngle = 360 / planeTotalItems;
 
-function updateCarousel() {
-    techItems.forEach((item, index) => {
-        const itemAngle = index * angle + rotationAngle; // Calculate the angle for each item
-        const isCenter = Math.abs((itemAngle % 360) - 0) < angle / 2; // Check if the item is at the center
+function updatePlaneCarousel() {
+    planeItems.forEach((item, index) => {
+        const itemAngle = index * planeAngle + planeRotationAngle;
+        const isCenter = Math.abs((itemAngle % 360) - 0) < planeAngle / 2;
 
-        // Apply transformations
         item.style.transform = `rotateY(${itemAngle}deg) translateZ(600px)`;
-        item.style.opacity = isCenter ? '1' : '0.5'; // Only the center item is visible
-        item.style.pointerEvents = isCenter ? 'auto' : 'none'; // Disable interaction for non-center items
-        item.style.zIndex = isCenter ? '10' : '0'; // Bring the center item to the front
+        item.style.opacity = isCenter ? '1' : '0.5';
+        item.style.pointerEvents = isCenter ? 'auto' : 'none';
+        item.style.zIndex = isCenter ? '10' : '0';
     });
 }
 
-function rotateCarousel() {
-    rotationAngle -= angle; // Increment the rotation angle
-    updateCarousel();
+function rotatePlaneCarousel() {
+    planeRotationAngle -= planeAngle;
+    updatePlaneCarousel();
 }
 
-// Initialize carousel
-updateCarousel();
+updatePlaneCarousel();
+setInterval(rotatePlaneCarousel, 5000);
 
-// Rotate carousel continuously every 2 seconds
-setInterval(rotateCarousel, 3000);
+// People Shots Carousel
+const peopleContainer = document.querySelector('#people .tech-container');
+const peopleItems = document.querySelectorAll('#people .nature-pic');
+let peopleRotationAngle = 0;
+const peopleTotalItems = peopleItems.length;
+const peopleAngle = 360 / peopleTotalItems;
+
+function updatePeopleCarousel() {
+    peopleItems.forEach((item, index) => {
+        const itemAngle = index * peopleAngle + peopleRotationAngle;
+        const isCenter = Math.abs((itemAngle % 360) - 0) < peopleAngle / 2;
+
+        item.style.transform = `rotateY(${itemAngle}deg) translateZ(600px)`;
+        item.style.opacity = isCenter ? '1' : '0.5';
+        item.style.pointerEvents = isCenter ? 'auto' : 'none';
+        item.style.zIndex = isCenter ? '10' : '0';
+    });
+}
+
+function rotatePeopleCarousel() {
+    peopleRotationAngle -= peopleAngle;
+    updatePeopleCarousel();
+}
+
+updatePeopleCarousel();
+setInterval(rotatePeopleCarousel, 5000);
