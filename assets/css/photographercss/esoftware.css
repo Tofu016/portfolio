@@ -198,6 +198,10 @@ header {
         gap: 20px;
     }
 
+    .tech-item p {
+        text-align: center;
+    }
+
     .tech-item {
         text-align: center;
         flex: 1 1 calc(50% - 20px);
