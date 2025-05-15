@@ -161,18 +161,6 @@ header {
         margin-top: 150px;
     }
 
-    #animated-face {
-        order: -1;
-        flex: 0 0 auto;
-        padding: 0;
-    }
-
-    #animated-image {
-        width: 200px;
-        height: 200px;
-        border-radius: 10%;
-    }
-
     .about {
         max-width: 90%;
         font-size: 1rem;
@@ -190,7 +178,7 @@ header {
 
 @media (max-width: 480px) {
     #introduction {
-        padding: 10px;
+        padding: 20px;
         margin-top: 20px;
     }
 
@@ -199,7 +187,7 @@ header {
     }
 
     .about p{
-        font-size: 0.8rem;
+        font-size: 0.7rem;
         text-align: justify;
     }
 }
