@@ -158,7 +158,7 @@ header {
     background-color: #007bff;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     #introduction {
         flex-direction: column;
         align-items: center;
@@ -179,10 +179,36 @@ header {
     }
 }
 
-@media (max-width: 480px) {
+@media(max-width: 768px) {
+    #introduction {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .about {
+        max-width: 90%;
+        font-size: 1rem;
+        padding: 20px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .about p {
+        margin-bottom: 15px;
+        text-align: justify;
+    }
+}
+
+@media(max-width: 480px) {
     #introduction {
         padding: 20px;
-        margin-top: 20px;
+        margin-top: 50px;
+    }
+
+    #static-face {
+        width: 100px;
+        height: 100px;
     }
 
     .about {
@@ -190,7 +216,7 @@ header {
     }
 
     .about p{
-        font-size: 0.7rem;
+        font-size: 0.8rem;
         text-align: justify;
     }
 }

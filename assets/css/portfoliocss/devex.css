@@ -161,6 +161,10 @@ header {
 }
 
 @media (max-width: 1024px) {
+    .tech-container {
+        margin-top: -50px;
+    }
+
     .tech-items {
         display: flex;
         flex-wrap: wrap;
@@ -176,6 +180,10 @@ header {
 }
 
 @media (max-width: 768px) {
+    .tech-container {
+        margin-top: -50px;
+    }
+
     .tech-items {
         display: flex;
         flex-wrap: wrap;
@@ -191,6 +199,10 @@ header {
 }
 
 @media (max-width: 480px) {
+    .tech-container {
+        margin-top: -50px;
+    }
+
     .tech-items {
         display: flex;
         flex-wrap: wrap;

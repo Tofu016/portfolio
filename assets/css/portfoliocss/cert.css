@@ -147,9 +147,10 @@ header {
 @media (max-width: 1024px) {
     .cert-container {
         flex-wrap: wrap;
-        gap: 100px;
+        gap: 50px;
         justify-content: center;
-        z-index: -1;
+        margin-top: -180px;
+        margin-bottom: -150px;
     }
 
     .cert-item {
@@ -173,9 +174,10 @@ header {
 @media (max-width: 768px) {
     .cert-container {
         flex-wrap: wrap;
-        gap: 100px;
         justify-content: center;
-        z-index: -1;
+        gap: 50px;
+        margin-top: -180px;
+        margin-bottom: -150px;
     }
 
     .cert-item {
@@ -199,8 +201,10 @@ header {
 @media (max-width: 480px) {
     .cert-container {
         flex-direction: column;
-        gap: 100px;
-        z-index: -1;
+        justify-content: center;
+        gap: 50px;
+        margin-top: -180px;
+        margin-bottom: -150px;
     }
 
     .cert-item {

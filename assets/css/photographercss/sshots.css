@@ -240,19 +240,19 @@ header {
 
 @media (max-width: 1024px) {
     .tech-container {
-        margin-top: 200px;
+        margin-top: 150px;
     }
 
     .tech-item {
         justify-content: center;
-        width: 380px;
+        width: 310px;
         height: 270px;
     }
     
     .tech-item img {
-        width: 340px;
-        height: 200px;
-        margin-top: -10px;
+        width: 290px;
+        height: 175px;
+        margin-top: 10px;
     }
 
     .tech-item p {
@@ -262,14 +262,14 @@ header {
 
     .nature-pic {
         justify-content: center;
-        width: 380px;
+        width: 310px;
         height: 270px;
     }
     
     .nature-pic img {
-        width: 340px;
-        height: 200px;
-        margin-top: -5px;
+        width: 290px;
+        height: 175px;
+        margin-top: 10px;
     }
 
     .nature-pic p {
@@ -350,19 +350,19 @@ header {
 
 @media (max-width: 480px) {
     .tech-container {
-        margin-top: 20px;
+        margin-top: -30px;
     }
 
     .tech-item {
         justify-content: center;
-        width: 150px;
-        height: 130px;
+        width: 130px;
+        height: 125px;
     }
     
     .tech-item img {
-        width: 140px;
-        height: 90px;
-        margin-top: 3px;
+        width: 120px;
+        height: 75px;
+        margin-top: 8px;
     }
 
     .tech-item p {
@@ -372,14 +372,14 @@ header {
 
     .nature-pic {
         justify-content: center;
-        width: 150px;
-        height: 130px;
+        width: 130px;
+        height: 125px;
     }
     
     .nature-pic img {
-        width: 140px;
+        width: 120px;
         height: 90px;
-        margin-top: 3px;
+        margin-top: 2px;
     }
 
     .nature-pic p {
@@ -393,7 +393,7 @@ header {
         justify-content: center;
         align-items: center;
         gap: 20px;
-        top: 380px;
+        top: 250px;
         transform: translateX(-50%);
     }
 
