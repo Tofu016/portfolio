@@ -23,7 +23,7 @@ function rotatePlaneCarousel() {
 }
 
 updatePlaneCarousel();
-setInterval(rotatePlaneCarousel, 5000);
+setInterval(rotatePlaneCarousel, 3000);
 
 // People Shots Carousel
 const peopleContainer = document.querySelector('#people .tech-container');
@@ -50,4 +50,4 @@ function rotatePeopleCarousel() {
 }
 
 updatePeopleCarousel();
-setInterval(rotatePeopleCarousel, 5000);
+setInterval(rotatePeopleCarousel, 3000);
