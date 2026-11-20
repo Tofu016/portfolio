@@ -3,54 +3,179 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Cristopher Pondoc | Developer &amp; Multimedia Producer</title>
-  <meta name="description" content="Portfolio of Cristopher Pondoc, a front-end developer and multimedia producer who builds websites and photographs aircraft.">
-  <meta property="og:title" content="Cristopher Pondoc | Developer &amp; Multimedia Producer">
-  <meta property="og:description" content="Front-end development and aviation photography.">
+  <title>Cristopher Pondoc | Developer, Photographer &amp; Aviation Enthusiast</title>
+  <meta name="description" content="Portfolio of Cristopher Pondoc: front-end developer, photographer and aviation enthusiast.">
+  <meta property="og:title" content="Cristopher Pondoc | Departures">
+  <meta property="og:description" content="Front-end development, photography and aviation.">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://tofu016.github.io/portfolio/images/web/nature/sky-1-1600.jpg">
+  <meta property="og:image" content="https://tofu016.github.io/portfolio/images/multimedia/samples/planes/PAL.jpg">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Silkscreen:wght@400;700&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/site.css">
 </head>
 <body>
-  <main class="home">
-    <div>
-      <p class="readout rec">Select mode</p>
-      <h1>Cristopher Pondoc</h1>
-      <p class="home-lede">Front-end developer and multimedia producer. I build websites and photograph aircraft.</p>
+  <a class="skip" href="#departures">Skip the game</a>
 
-      <nav class="modes" aria-label="Portfolio sections">
-        <a class="mode-link" href="developer.html">
-          <span class="readout">01</span>
-          <strong>Developer</strong>
-          <span class="readout">About / Projects / Stack / Certifications</span>
-          <span class="arrow" aria-hidden="true">&rarr;</span>
-        </a>
-        <a class="mode-link" href="photography.html">
-          <span class="readout">02</span>
-          <strong>Multimedia</strong>
-          <span class="readout">Aviation / Landscape / Editing tools</span>
-          <span class="arrow" aria-hidden="true">&rarr;</span>
-        </a>
-      </nav>
+  <header class="wrap">
+    <div class="terminal readout">
+      <span>Terminal CP / Main hall</span>
+      <button class="sfx-toggle" type="button" data-sfx-toggle aria-pressed="false" aria-label="Sound effects">&#9834; Off</button>
+    </div>
+  </header>
 
-      <div class="home-links readout">
-        <a href="https://www.linkedin.com/in/cristopher-pondoc-b780ba2a8/" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="https://github.com/Tofu016" target="_blank" rel="noopener">GitHub</a>
+  <section class="game" id="game" tabindex="0" aria-label="Terminal CP game. Press start, walk with the left and right arrow keys, and press up or Enter at a gate to board it. The departures board below has the same links.">
+    <div class="game-view">
+      <div class="scene scene--hall game-fallback" aria-hidden="true">
+        <div class="scene-inner">
+          <img class="layer" src="images/pixel/hall-back.png" width="720" height="168" alt="">
+          <span class="sp plane-far"></span>
+          <span class="sp beacon beacon--hall"></span>
+          <img class="layer" src="images/pixel/hall-front.png" width="720" height="168" alt="">
+          <span class="sp walker walker-a"></span>
+          <span class="sp walker walker-b left"></span>
+          <span class="sp walker walker-c"></span>
+        </div>
       </div>
+
+      <div class="game-title">
+        <p class="game-logo">Terminal CP</p>
+        <p class="readout">A portfolio by Cristopher Pondoc</p>
+        <button class="game-start" type="button">&#9654; Press start</button>
+        <p class="readout game-hint">&larr; &rarr; walk / &uarr; or Enter to board / or tap a gate</p>
+      </div>
+
+      <p class="game-prompt readout" hidden></p>
+
+      <div class="game-dialog" hidden>
+        <p class="game-line" aria-hidden="true"></p>
+        <div class="game-choices"></div>
+      </div>
+      <p class="visually-hidden game-sr" aria-live="polite"></p>
     </div>
 
-    <figure class="portrait">
-      <img src="images/face/face-4.jpg" width="496" height="673" alt="Cristopher Pondoc aiming a Nikon camera at the viewer, with a long telephoto lens on a tripod in the foreground.">
-      <span class="af brackets" aria-hidden="true"></span>
-      <figcaption class="readout">
-        <span>@C.Pondoc</span>
-        <span>AF locked</span>
-      </figcaption>
-    </figure>
+    <div class="game-pad" aria-hidden="true">
+      <button type="button" tabindex="-1" data-pad="left">&#9664;</button>
+      <button type="button" tabindex="-1" data-pad="right">&#9654;</button>
+      <button type="button" tabindex="-1" data-pad="act">A</button>
+    </div>
+  </section>
+
+  <main>
+    <section class="wrap intro">
+      <div>
+        <p class="readout">Player 1 / About</p>
+        <h1>Cristopher Pondoc</h1>
+        <p class="lede">Full-Stack Developer, Photographer and Aspiring Airline Pilot. Play the game above, or pick a flight below.</p>
+      </div>
+      <figure class="passport">
+        <img src="images/face/face-4.jpg" width="496" height="673" alt="Cristopher Pondoc aiming a Nikon camera at the viewer, with a long telephoto lens on a tripod in the foreground.">
+        <figcaption>
+          <span>Passenger</span>
+          <span>Pondoc / Cristopher</span>
+        </figcaption>
+      </figure>
+    </section>
+
+    <section class="wrap" id="departures">
+      <div class="board">
+        <div class="board-head">
+          <h2>
+            <svg class="pict" viewBox="0 0 12 12" aria-hidden="true"><path d="M5 0h1v1h-1zM6 0h1v1h-1zM4 1h1v1h-1zM5 1h1v1h-1zM6 1h1v1h-1zM7 1h1v1h-1zM4 2h1v1h-1zM5 2h1v1h-1zM6 2h1v1h-1zM7 2h1v1h-1zM4 3h1v1h-1zM5 3h1v1h-1zM6 3h1v1h-1zM7 3h1v1h-1zM2 4h1v1h-1zM3 4h1v1h-1zM4 4h1v1h-1zM5 4h1v1h-1zM6 4h1v1h-1zM7 4h1v1h-1zM8 4h1v1h-1zM9 4h1v1h-1zM0 5h1v1h-1zM1 5h1v1h-1zM2 5h1v1h-1zM3 5h1v1h-1zM4 5h1v1h-1zM5 5h1v1h-1zM6 5h1v1h-1zM7 5h1v1h-1zM8 5h1v1h-1zM9 5h1v1h-1zM10 5h1v1h-1zM11 5h1v1h-1zM0 6h1v1h-1zM1 6h1v1h-1zM2 6h1v1h-1zM3 6h1v1h-1zM4 6h1v1h-1zM5 6h1v1h-1zM6 6h1v1h-1zM7 6h1v1h-1zM8 6h1v1h-1zM9 6h1v1h-1zM10 6h1v1h-1zM11 6h1v1h-1zM4 7h1v1h-1zM5 7h1v1h-1zM6 7h1v1h-1zM7 7h1v1h-1zM4 8h1v1h-1zM5 8h1v1h-1zM6 8h1v1h-1zM7 8h1v1h-1zM4 9h1v1h-1zM5 9h1v1h-1zM6 9h1v1h-1zM7 9h1v1h-1zM3 10h1v1h-1zM4 10h1v1h-1zM5 10h1v1h-1zM6 10h1v1h-1zM7 10h1v1h-1zM8 10h1v1h-1zM2 11h1v1h-1zM3 11h1v1h-1zM4 11h1v1h-1zM5 11h1v1h-1zM6 11h1v1h-1zM7 11h1v1h-1zM8 11h1v1h-1zM9 11h1v1h-1z"/></svg>
+            Departures
+          </h2>
+          <span class="readout">Local time <time data-clock>--:--</time></span>
+        </div>
+
+        <div class="board-cols readout" aria-hidden="true">
+          <span>Flight</span><span>Destination</span><span>Gate</span><span>Status</span>
+        </div>
+
+        <ul class="board-rows">
+          <li>
+            <a class="flight" href="developer.html" aria-label="Developer: projects, stack and certifications. Gate D1, boarding.">
+              <span class="f-no" data-flap>CP 101</span>
+              <span class="f-dest">
+                <span data-flap>DEVELOPER</span>
+                <span class="f-sub readout">Projects / Stack / Certifications</span>
+              </span>
+              <span class="f-gate" data-flap>D1</span>
+              <span class="f-status s-board">Boarding</span>
+              <span class="f-go" aria-hidden="true">&rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a class="flight" href="photography.html" aria-label="Photography: landscape gallery and editing tools. Gate P2, on time.">
+              <span class="f-no" data-flap>CP 202</span>
+              <span class="f-dest">
+                <span data-flap>PHOTOGRAPHY</span>
+                <span class="f-sub readout">Landscape / Sky / Editing tools</span>
+              </span>
+              <span class="f-gate" data-flap>P2</span>
+              <span class="f-status s-time">On time</span>
+              <span class="f-go" aria-hidden="true">&rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a class="flight" href="pilot.html" aria-label="Pilot: spotting log, flight sim and crew card. Gate A3, sim only.">
+              <span class="f-no" data-flap>CP 303</span>
+              <span class="f-dest">
+                <span data-flap>PILOT</span>
+                <span class="f-sub readout">Spotting log / Flight sim / Crew card</span>
+              </span>
+              <span class="f-gate" data-flap>A3</span>
+              <span class="f-status s-sim">Sim only</span>
+              <span class="f-go" aria-hidden="true">&rarr;</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sign">
+            <svg class="pict" viewBox="0 0 12 12" aria-hidden="true"><path d="M4 0h1v1h-1zM5 0h1v1h-1zM6 0h1v1h-1zM7 0h1v1h-1zM3 1h1v1h-1zM4 1h1v1h-1zM5 1h1v1h-1zM6 1h1v1h-1zM7 1h1v1h-1zM8 1h1v1h-1zM3 2h1v1h-1zM4 2h1v1h-1zM5 2h1v1h-1zM6 2h1v1h-1zM7 2h1v1h-1zM8 2h1v1h-1zM3 3h1v1h-1zM4 3h1v1h-1zM5 3h1v1h-1zM6 3h1v1h-1zM7 3h1v1h-1zM8 3h1v1h-1zM4 4h1v1h-1zM5 4h1v1h-1zM6 4h1v1h-1zM7 4h1v1h-1zM2 6h1v1h-1zM3 6h1v1h-1zM4 6h1v1h-1zM5 6h1v1h-1zM6 6h1v1h-1zM7 6h1v1h-1zM8 6h1v1h-1zM9 6h1v1h-1zM1 7h1v1h-1zM2 7h1v1h-1zM3 7h1v1h-1zM4 7h1v1h-1zM5 7h1v1h-1zM6 7h1v1h-1zM7 7h1v1h-1zM8 7h1v1h-1zM9 7h1v1h-1zM10 7h1v1h-1zM1 8h1v1h-1zM2 8h1v1h-1zM3 8h1v1h-1zM4 8h1v1h-1zM5 8h1v1h-1zM6 8h1v1h-1zM7 8h1v1h-1zM8 8h1v1h-1zM9 8h1v1h-1zM10 8h1v1h-1zM1 9h1v1h-1zM2 9h1v1h-1zM3 9h1v1h-1zM4 9h1v1h-1zM5 9h1v1h-1zM6 9h1v1h-1zM7 9h1v1h-1zM8 9h1v1h-1zM9 9h1v1h-1zM10 9h1v1h-1zM1 10h1v1h-1zM2 10h1v1h-1zM3 10h1v1h-1zM4 10h1v1h-1zM5 10h1v1h-1zM6 10h1v1h-1zM7 10h1v1h-1zM8 10h1v1h-1zM9 10h1v1h-1zM10 10h1v1h-1z"/></svg>
+            About me
+          </h2>
+        </div>
+        <div class="about-grid">
+          <div class="prose">
+            <p>I'm studying for a Bachelor of Science in Information Technology at St. Dominic College of Asia and working toward a career in front-end development. I design, build and animate websites, and I've learned most of what I know by building things and pushing myself to the limit.</p>
+            <p>Alongside HTML, CSS and JavaScript, I also work with Java, C and Dart.</p>
+          </div>
+          <div class="prose">
+            <p>Behind the camera, I have three years of photography experience and two years of videography. I shoot landscapes, people and events, but aviation is the subject I keep coming back to.</p>
+            <p>When I'm not spotting planes from the ground, I'm flying them in a simulator.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section contact" id="contact">
+      <div class="wrap">
+        <p class="readout">Information desk</p>
+        <h2>Want to work together? Find me here.</h2>
+        <div class="connect">
+          <a class="out" href="https://www.linkedin.com/in/cristopher-pondoc-b780ba2a8/" target="_blank" rel="noopener">LinkedIn <span class="arrow" aria-hidden="true">&nearr;</span></a>
+          <a class="out" href="https://github.com/Tofu016" target="_blank" rel="noopener">GitHub <span class="arrow" aria-hidden="true">&nearr;</span></a>
+        </div>
+      </div>
+    </section>
   </main>
+
+  <footer class="wrap">
+    <div class="foot readout">
+      <span>&copy; 2026 Cristopher Pondoc</span>
+      <a href="#departures">Back to departures &uarr;</a>
+    </div>
+  </footer>
+
+  <script src="assets/js/sfx.js"></script>
+  <script src="assets/js/board.js"></script>
+  <script src="assets/js/airport.js"></script>
+  <script src="assets/js/game.js"></script>
 </body>
 </html>
