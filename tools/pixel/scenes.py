@@ -390,8 +390,21 @@ def apron_view():
     for x in range(4, 230, 10):
         for y in range(80, 122, 8):
             rect(d, x, y, x + 7, y + 5, C["win"] if rnd.random() < .35 else (44, 74, 110))
+    # Jet bridge from the terminal, with a rotunda column at the building end,
+    # a drive leg on a wheeled bogie near the outer end, and a cab at the tip.
     rect(d, 190, 100, 300, 108, C["jet"])
     rect(d, 190, 100, 300, 101, C["fuse2"])
+    for x in range(198, 296, 9):
+        rect(d, x, 103, x + 4, 105, C["screen"])
+    rect(d, 296, 98, 306, 110, C["jet2"])
+    rect(d, 297, 99, 305, 99, C["fuse2"])
+    rect(d, 205, 109, 210, 126, (110, 114, 122))
+    rect(d, 205, 109, 205, 126, (140, 144, 152))
+    rect(d, 272, 109, 275, 121, C["jet2"])
+    rect(d, 270, 109, 277, 110, C["jet2"])
+    rect(d, 267, 122, 280, 123, C["jet2"])
+    rect(d, 268, 124, 271, 126, C["shoe"])
+    rect(d, 276, 124, 279, 126, C["shoe"])
     tower(d, 520, 30, 126)
     rect(d, 516, 40, 524, 126, C["tower"])
     rect(d, 518, 40, 518, 126, C["tower2"])
@@ -556,6 +569,42 @@ def crew_sheet():
     im.save(f"{OUT}/crew.png")
 
 
+def flight_crew_sheet():
+    """Airline crew at traveller scale (14x20, 2 walk frames), each pulling a roller bag.
+    Rows: captain, first officer, flight attendant (red), flight attendant (navy)."""
+    fw, fh = 14, 20
+    navy, gold, white = (28, 36, 66), (232, 184, 64), (236, 236, 240)
+    bag, stockings = (78, 84, 100), (44, 38, 46)
+    crew = [
+        ("pilot", white, navy, C["skin"], C["hair"]),
+        ("pilot", white, navy, C["skin2"], C["hair"]),
+        ("attendant", (190, 40, 52), (190, 40, 52), (222, 176, 136), (60, 36, 24)),
+        ("attendant", navy, navy, C["skin"], C["hair"]),
+    ]
+    im = Image.new("RGBA", (fw * 2, fh * len(crew)), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    for row, (role, top, bottom, skin, hair) in enumerate(crew):
+        for f in range(2):
+            x, y = f * fw, row * fh
+            o = x + 4
+            legs = stockings if role == "attendant" else bottom
+            person(d, x, y, f, top, legs, skin, hair, bag=bag)
+            if role == "pilot":
+                # Cap with a gold badge and peak, black tie, gold epaulettes.
+                rect(d, o + 3, y, o + 6, y, navy)
+                rect(d, o + 5, y + 1, o + 7, y + 1, C["ink"])
+                d.point((o + 5, y), fill=gold)
+                rect(d, o + 5, y + 5, o + 5, y + 9, C["ink"])
+                d.point((o + 2, y + 4), fill=gold)
+                d.point((o + 7, y + 4), fill=gold)
+            else:
+                # Hair in a bun, yellow scarf at the neck, uniform skirt.
+                d.point((o + 2, y + 1), fill=hair)
+                rect(d, o + 4, y + 4, o + 5, y + 4, C["yellow"])
+                rect(d, o + 2, y + 12, o + 7, y + 13, bottom)
+    im.save(f"{OUT}/flight-crew.png")
+
+
 def traffic_sheet():
     """Distant airliners for take-offs and landings. Columns: 4 pitch angles (0, 4, 8, 12
     degrees nose-up). Rows: 3 liveries x 4 landing-gear positions (down, 3/4, 1/4, up), so
@@ -668,6 +717,198 @@ def photographer():
     im.save(f"{OUT}/photographer.png")
 
 
+# Page-transition loader: A320 flight deck ---------------------------------
+# 320x180, laid out from a 1920x1080 reference screenshot at exactly 1/6 scale.
+# Screens are left dark here; assets/js/transition.js draws their content and
+# the thrust levers (positions must match SCREENS / LEVERS in that file).
+
+# Screen rectangles (x, y, w, h); keep in sync with SCREENS in assets/js/transition.js.
+COCKPIT_SCREENS = (
+    (97, 95, 18, 16), (117, 95, 17, 16),     # captain PFD, ND
+    (151, 94, 18, 17), (151, 113, 18, 17),   # upper and lower ECAM
+    (186, 95, 17, 16), (205, 95, 18, 16),    # first officer ND, PFD
+    (142, 101, 6, 7),                        # standby instrument
+)
+
+
+def cockpit():
+    cw, ch = 320, 180
+    im = Image.new("RGBA", (cw, ch), (36, 41, 52, 255))
+    d = ImageDraw.Draw(im)
+    rnd = random.Random(320)
+    panel, panel_hi, panel_lo = (132, 144, 170), (156, 167, 192), (104, 115, 140)
+    frame, frame_hi, gap = (150, 160, 182), (178, 188, 206), (26, 29, 37)
+    trim, ceiling = (58, 64, 78), (40, 44, 54)
+    seat, seat_hi, seat_lo, stripe = (34, 62, 104), (52, 86, 136), (22, 40, 70), (46, 80, 128)
+    knob, switch, amber = (210, 214, 222), (24, 26, 32), (255, 168, 40)
+
+    def mirror(points):
+        return [(cw - 1 - x, y) for x, y in points]
+
+    def speckle(box, base, n):
+        x0, y0, x1, y1 = box
+        for _ in range(n):
+            c = tuple(max(0, min(255, v + rnd.randint(-10, 10))) for v in base)
+            d.point((rnd.randint(x0, x1), rnd.randint(y0, y1)), fill=c)
+
+    # Sky behind every window: gradient plus a few clouds (outside is kept simple).
+    sky = Image.new("RGBA", (cw, ch))
+    sd = ImageDraw.Draw(sky)
+    for y in range(ch):
+        t = min(1, max(0, (y - 18) / 74))
+        sd.line([(0, y), (cw, y)], fill=(int(108 + 98 * t), int(166 + 60 * t), int(228 + 18 * t), 255))
+    for cx, cy, rx, ry in ((70, 40, 16, 5), (100, 55, 22, 6), (205, 48, 26, 7), (250, 62, 18, 5), (130, 66, 14, 4), (30, 58, 12, 4), (292, 44, 12, 4)):
+        sd.ellipse([cx - rx, cy - ry, cx + rx, cy + ry], fill=(236, 241, 250, 255))
+        sd.ellipse([cx - rx + 4, cy - ry - 3, cx + rx - 6, cy + 1], fill=(250, 252, 255, 255))
+    windows = [
+        [(46, 25), (152, 43), (152, 74), (76, 79), (56, 88)],  # left windscreen
+        [(0, 19), (26, 23), (50, 88), (24, 91), (0, 94)],       # left side window
+    ]
+    mask = Image.new("L", (cw, ch), 0)
+    md = ImageDraw.Draw(mask)
+    for poly in windows:
+        md.polygon(poly, fill=255)
+        md.polygon(mirror(poly), fill=255)
+    im.paste(sky, (0, 0), mask)
+
+    # Ceiling, overhead panel and the dark trim band above the windscreens.
+    rect(d, 0, 0, cw - 1, 17, ceiling)
+    d.polygon([(0, 18), (cw - 1, 18), (cw - 1, 21), (300, 26), (170, 28), (160, 27), (150, 28), (20, 26), (0, 21)], fill=trim)
+    rect(d, 88, 0, 232, 17, (86, 96, 116))
+    rect(d, 88, 17, 232, 18, gap)
+    for x in range(122, 200, 1):
+        if x % 26 == 0:
+            rect(d, x, 0, x, 17, gap)
+    for row, y in enumerate((2, 7, 12)):
+        for x in range(92, 229, 5):
+            if rnd.random() < 0.7:
+                if rnd.random() < 0.35:
+                    d.point((x, y), fill=knob)
+                    d.point((x + 1, y + 1), fill=(150, 154, 162))
+                else:
+                    rect(d, x, y, x + 1, y + 2, switch)
+                    if rnd.random() < 0.15:
+                        d.point((x, y), fill=rnd.choice([amber, (240, 240, 240), (90, 220, 120)]))
+    rect(d, 147, 27, 172, 38, (112, 122, 144))
+    rect(d, 155, 32, 164, 34, gap)
+
+    # Window frames: pillars between windows, centre post with its warning lights.
+    for poly in ([(24, 22), (30, 22), (56, 88), (50, 89)], [(0, 94), (24, 91), (26, 96), (0, 100)]):
+        d.polygon(poly, fill=frame)
+        d.polygon(mirror(poly), fill=frame)
+    d.polygon([(26, 22), (46, 24), (46, 27), (28, 25)], fill=frame_hi)
+    d.polygon(mirror([(26, 22), (46, 24), (46, 27), (28, 25)]), fill=frame_hi)
+    rect(d, 153, 38, 166, 74, frame)
+    rect(d, 153, 38, 154, 74, frame_hi)
+    rect(d, 157, 61, 158, 62, (230, 40, 40))
+    d.point((160, 62), fill=(240, 240, 240))
+    # Round air vents on the upper window frames.
+    for cx in (30, cw - 31):
+        d.ellipse([cx - 2, 31, cx + 2, 35], fill=frame_hi)
+        d.point((cx, 33), fill=(70, 76, 90))
+
+    # Glareshield: dark coaming, FCU and EFIS control panels with amber readouts.
+    d.polygon([(56, 88), (76, 79), (160, 76), (244, 79), (264, 88), (264, 92), (56, 92)], fill=(48, 54, 66))
+    rect(d, 86, 79, 234, 87, (112, 124, 148))
+    rect(d, 126, 78, 191, 87, (66, 70, 82))
+    for x in (144, 162, 180):
+        rect(d, x - 4, 79, x + 3, 80, amber)
+    for x in (130, 137, 151, 158, 168, 175, 186):
+        d.point((x, 83), fill=knob)
+        d.point((x, 84), fill=(120, 124, 132))
+    for x0 in (126, 175):
+        rect(d, x0, 78, x0 + 15, 87, (74, 78, 92))
+        rect(d, x0 + 10, 79, x0 + 13, 80, amber)
+        for kx in (x0 + 3, x0 + 7):
+            d.point((kx, 83), fill=knob)
+    for x in range(92, 124, 6):
+        rect(d, x, 82, x + 1, 83, switch)
+    for x in range(196, 230, 6):
+        rect(d, x, 82, x + 1, 83, switch)
+
+    # Main instrument panel with the six display bezels (screens drawn in JS).
+    d.polygon([(64, 92), (256, 92), (256, 131), (64, 131)], fill=panel)
+    rect(d, 64, 92, 256, 92, panel_hi)
+    speckle((64, 93, 256, 130), panel, 900)
+    # Six displays at their reference positions (x, y, w, h), each in a grey bezel:
+    # PFD, ND | upper and lower ECAM | ND, PFD, plus the small standby instrument.
+    for x, y, w, h in COCKPIT_SCREENS:
+        rect(d, x - 2, y - 2, x + w + 1, y + h + 1, (70, 76, 90))
+        rect(d, x - 1, y - 1, x + w, y + h, (30, 33, 40))
+        rect(d, x, y, x + w - 1, y + h - 1, (6, 8, 10))
+    for side in (1, -1):
+        for x, y in ((86, 98), (89, 98), (86, 103), (90, 106), (139, 113), (139, 117)):
+            px = x if side == 1 else cw - 1 - x
+            d.point((px, y), fill=knob)
+    rect(d, 172, 108, 174, 120, (220, 224, 230))
+    rect(d, 171, 106, 175, 108, (240, 240, 244))
+    d.ellipse([177, 114, 183, 120], fill=(34, 36, 44))
+    d.point((180, 117), fill=(230, 230, 230))
+    rect(d, 137, 122, 145, 129, (24, 27, 34))
+    rect(d, 174, 122, 182, 129, (24, 27, 34))
+    for x0 in (83, 117, 188, 222):
+        rect(d, x0, 117, x0 + 13, 119, (226, 230, 236))
+        rect(d, x0, 119, x0 + 13, 119, panel_lo)
+    for side in (1, -1):
+        cx = 74 if side == 1 else cw - 75
+        d.ellipse([cx - 4, 113, cx + 4, 121], fill=(196, 190, 176))
+        for k in range(-3, 4, 2):
+            d.point((cx + k, 117), fill=(150, 144, 132))
+
+    # Side consoles, EFB tablets and sidesticks.
+    for poly in ([(24, 96), (64, 92), (64, 131), (40, 150), (20, 150)],):
+        d.polygon(poly, fill=(70, 80, 100))
+        d.polygon(mirror(poly), fill=(70, 80, 100))
+    rect(d, 16, 88, 32, 109, (14, 15, 19))
+    rect(d, 18, 90, 30, 107, (22, 24, 30))
+    rect(d, 286, 88, 314, 113, (14, 15, 19))
+    rect(d, 288, 90, 312, 111, (22, 24, 30))
+    rect(d, 40, 120, 43, 134, (18, 18, 22))
+    d.point((41, 120), fill=(230, 40, 40))
+    rect(d, 36, 134, 47, 137, (50, 54, 62))
+    rect(d, 271, 118, 275, 136, (16, 16, 20))
+    rect(d, 272, 120, 273, 121, (230, 40, 40))
+    for k in range(4):
+        rect(d, 266 - k, 137 + k * 2, 280 + k, 138 + k * 2, (200 - k * 12, 204 - k * 12, 212 - k * 12))
+
+    # Pedestal: MCDUs, thrust-lever quadrant (levers drawn in JS), radio panels.
+    d.polygon([(132, 131), (188, 131), (213, 179), (107, 179)], fill=panel_lo)
+    speckle((134, 146, 186, 179), panel_lo, 300)
+    for x0 in (133, 172):
+        rect(d, x0, 132, x0 + 14, 144, (40, 44, 54))
+        rect(d, x0 + 1, 133, x0 + 13, 138, (8, 12, 10))
+        for ky in range(140, 157, 3):
+            for kx in range(x0, x0 + 15, 3):
+                d.point((kx, ky), fill=(200, 204, 212))
+    rect(d, 148, 146, 172, 179, (60, 66, 80))
+    for y in range(148, 179, 3):
+        rect(d, 151, y, 169, y, (80, 120, 96))
+    rect(d, 158, 148, 162, 152, (44, 46, 54))
+    for x0 in (124, 176):
+        rect(d, x0, 158, x0 + 20, 179, (54, 60, 74))
+        rect(d, x0 + 2, 160, x0 + 8, 161, amber)
+        rect(d, x0 + 12, 160, x0 + 18, 161, amber)
+        for ky in range(164, 179, 4):
+            for kx in range(x0 + 2, x0 + 19, 4):
+                d.point((kx, ky), fill=(190, 194, 200))
+
+    # Seats: blue fabric backs at the edges, striped cushions and armrests in front.
+    left_back = [(0, 24), (10, 26), (18, 60), (22, 180), (0, 180)]
+    left_seat = [(48, 150), (110, 148), (116, 180), (52, 180)]
+    left_arm = [(96, 146), (112, 146), (114, 180), (100, 180)]
+    left_shell = [(0, 96), (20, 92), (54, 150), (60, 180), (0, 180)]
+    for poly, colour in ((left_shell, seat_lo), (left_back, seat), (left_seat, seat), (left_arm, (40, 64, 98))):
+        d.polygon(poly, fill=colour)
+        d.polygon(mirror(poly), fill=colour)
+    for y in range(152, 180, 2):
+        rect(d, 54, y, 108, y, stripe)
+        rect(d, cw - 1 - 108, y, cw - 1 - 54, y, stripe)
+    d.line([(10, 26), (18, 60), (22, 179)], fill=seat_hi)
+    d.line([(cw - 11, 26), (cw - 19, 60), (cw - 23, 179)], fill=seat_hi)
+
+    im.save(f"{OUT}/cockpit.png")
+
+
 # Game level (main page) -------------------------------------------------
 
 LEVEL_W = 1440
@@ -760,12 +1001,15 @@ def concourse():
 
 
 def player():
-    """You: dark hair, navy bomber jacket, camera. Frame 0 idle, 1-4 walk. 16x32 each, facing right."""
+    """You, in a pilot's uniform: captain's cap with a gold badge, white short-sleeved
+    shirt with gold-striped epaulettes, wings and a black tie, black belt.
+    Frame 0 idle, 1-4 walk. 16x32 each, facing right."""
     fw, fh = 16, 32
-    jacket, jacket_hi = (38, 48, 78), (62, 76, 116)
-    shirt, pants, shoe = (40, 42, 46), (32, 34, 44), (16, 16, 18)
+    navy, navy_hi, cap = (28, 36, 66), (48, 60, 102), (18, 22, 40)
+    gold, white, tie = (232, 184, 64), (236, 236, 240), (14, 14, 18)
+    shade = (200, 204, 214)
+    pants, shoe, shine = (22, 26, 44), (10, 10, 12), (70, 74, 86)
     skin, hair = (176, 120, 82), (24, 20, 18)
-    cam, lens = (20, 20, 22), (96, 102, 116)
     legs = [(0, 0), (2, -2), (0, 0), (-2, 2), (0, 0)]
     arms = [0, 1, 0, -1, 0]
     bob = [0, 0, 1, 0, 1]
@@ -773,34 +1017,43 @@ def player():
     d = ImageDraw.Draw(im)
     for f in range(5):
         o, b = f * fw, bob[f]
-        # Hair and head.
-        rect(d, o + 6, 0 + b, o + 9, 0 + b, hair)
-        rect(d, o + 5, 1 + b, o + 11, 3 + b, hair)
-        rect(d, o + 4, 2 + b, o + 4, 5 + b, hair)
+        # Captain's cap: crown, band, peak to the front, gold badge.
+        rect(d, o + 5, 0 + b, o + 10, 1 + b, cap)
+        rect(d, o + 4, 2 + b, o + 11, 2 + b, navy_hi)
+        rect(d, o + 7, 3 + b, o + 12, 3 + b, tie)
+        rect(d, o + 8, 1 + b, o + 9, 1 + b, gold)
+        # Head with a little hair showing under the cap at the back.
+        rect(d, o + 5, 3 + b, o + 6, 5 + b, hair)
         rect(d, o + 5, 4 + b, o + 10, 9 + b, skin)
-        rect(d, o + 5, 4 + b, o + 6, 5 + b, hair)
+        rect(d, o + 5, 4 + b, o + 5, 5 + b, hair)
         d.point((o + 9, 6 + b), fill=hair)
         rect(d, o + 8, 8 + b, o + 9, 8 + b, (120, 76, 50))
         rect(d, o + 7, 10 + b, o + 8, 10 + b, skin)
-        # Jacket, shirt, camera.
-        rect(d, o + 4, 11 + b, o + 11, 21 + b, jacket)
-        rect(d, o + 5, 11 + b, o + 10, 11 + b, jacket_hi)
-        rect(d, o + 7, 12 + b, o + 8, 20 + b, shirt)
-        rect(d, o + 6, 12 + b, o + 6, 14 + b, cam)
-        rect(d, o + 7, 15 + b, o + 11, 18 + b, cam)
-        rect(d, o + 10, 16 + b, o + 11, 17 + b, lens)
-        rect(d, o + 4, 21 + b, o + 11, 21 + b, jacket_hi)
-        # Arms swing.
+        # White shirt with a shaded back edge, black tie, gold wings and a belt.
+        rect(d, o + 4, 11 + b, o + 11, 20 + b, white)
+        rect(d, o + 4, 12 + b, o + 4, 20 + b, shade)
+        rect(d, o + 7, 11 + b, o + 8, 11 + b, shade)
+        rect(d, o + 7, 12 + b, o + 8, 17 + b, tie)
+        rect(d, o + 9, 14 + b, o + 10, 14 + b, gold)
+        rect(d, o + 4, 21 + b, o + 11, 21 + b, tie)
+        d.point((o + 8, 21 + b), fill=gold)
+        # Epaulettes: navy with a gold stripe on each shoulder.
+        rect(d, o + 4, 11 + b, o + 5, 11 + b, navy)
+        rect(d, o + 10, 11 + b, o + 11, 11 + b, navy)
+        d.point((o + 5, 11 + b), fill=gold)
+        d.point((o + 10, 11 + b), fill=gold)
+        # Arms swing: short white sleeves, then bare forearms.
         a = arms[f]
-        rect(d, o + 3, 12 + b, o + 3, 19 + b + a, jacket)
-        d.point((o + 3, 20 + b + a), fill=skin)
-        rect(d, o + 12, 12 + b, o + 12, 19 + b - a, jacket)
-        d.point((o + 12, 20 + b - a), fill=skin)
-        # Legs: upper half shifts half as far as lower half.
+        rect(d, o + 3, 12 + b, o + 3, 14 + b, white)
+        rect(d, o + 3, 15 + b, o + 3, 20 + b + a, skin)
+        rect(d, o + 12, 12 + b, o + 12, 14 + b, white)
+        rect(d, o + 12, 15 + b, o + 12, 20 + b - a, skin)
+        # Legs: upper half shifts half as far as lower half. Polished shoes.
         for base, dx in ((5, legs[f][0]), (9, legs[f][1])):
             rect(d, o + base + dx // 2, 22 + b, o + base + 1 + dx // 2, 25 + b, pants)
             rect(d, o + base + dx, 26 + b, o + base + 1 + dx, 29, pants)
             rect(d, o + base + dx, 30, o + base + 2 + dx, 31, shoe)
+            d.point((o + base + 2 + dx, 30), fill=shine)
     im.save(f"{OUT}/player.png")
 
 
@@ -825,11 +1078,13 @@ if __name__ == "__main__":
     pushback()
     photographer()
     concourse()
+    cockpit()
     stand_sheets()
     marshaller()
     crowd_sheet()
     crowd_dark_sheet()
     crew_sheet()
+    flight_crew_sheet()
     traffic_sheet()
     player()
     portrait()

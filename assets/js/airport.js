@@ -185,7 +185,9 @@ window.Airport = (() => {
   // Crowds -----------------------------------------------------------------
   // sheet: a 2-column sprite sheet of 14x20 people (crowd, crowd-dark or crew).
   // standers: [{x, feet, row, flip}], walkers: count + lanes (feet y values).
-  function createCrowd({ sheet, rows, standers = [], walkers = 0, lanes = [], speed = [9, 18], minX = 0, maxX = 720, rowsFor = null }) {
+  // groups: people who walk together in step, e.g. an airline crew:
+  //   [{ rows: [0, 1, 2], x, feet, v, gap }] (gap = spacing between members).
+  function createCrowd({ sheet, rows, standers = [], walkers = 0, lanes = [], speed = [9, 18], minX = 0, maxX = 720, rowsFor = null, groups = [] }) {
     const people = [
       ...standers.map((s) => ({ v: 0, row: 0, ...s })),
       ...Array.from({ length: walkers }, (_, i) => ({
@@ -195,6 +197,11 @@ window.Airport = (() => {
         row: rowsFor ? rowsFor[i % rowsFor.length] : (i + 2) % rows,
         phase: rand(0, 1000),
       })),
+      // Group members share speed and step phase, spaced `gap` apart behind the leader.
+      ...groups.flatMap((g) => {
+        const phase = rand(0, 1000);
+        return g.rows.map((row, i) => ({ x: g.x - Math.sign(g.v) * i * g.gap, feet: g.feet, v: g.v, row, phase }));
+      }),
     ];
 
     function update(dt) {
@@ -325,6 +332,108 @@ window.Airport = (() => {
     return { state: s, update, freeze, draw };
   }
 
+  // Speech bubbles ---------------------------------------------------------
+  // Every few seconds someone on screen says a short line in a pixel bubble.
+  // Bubbles are HTML over the canvas (crisp text), decorative and hidden from
+  // screen readers.
+
+  const LINES = {
+    travellers: [
+      "Is gate D1 this way?", "I hope my bag made it.", "Window seat, please!", "Two hours early. Nailed it.",
+      "Wait, which terminal?", "Did I leave the stove on?", "Duty free, here I come!", "Boarding pass... boarding pass...",
+    ],
+    kids: ["Mom! A plane!", "Are we there yet?", "I'm gonna be a pilot!", "Can I sit by the window?"],
+    pilots: ["Clear skies tonight.", "Coffee first, then preflight.", "Nice cap, Captain!", "Smooth landing, I promise.", "Checklist complete."],
+    attendants: ["Welcome aboard!", "Seatbelts on, smiles on.", "Bags in the overhead, please.", "Exits are here, here and there.", "Cabin crew, arm the doors."],
+    devs: [
+      "It works on my machine.", "Did you just push to main?", "Delayed: waiting on code review.", "Boarding group: JavaScript.",
+      "Loading... 99%", "Who wrote this CSS?", "Merge conflict at 30,000 ft.", "Turn it off and on again?",
+    ],
+    photographers: ["Golden hour in 3, 2, 1...", "Shoot in RAW!", "Hold still... got it.", "That sky though.", "Long exposure: nobody move.", "One more shot, I promise."],
+    groundCrew: ["Bags loaded!", "Fuel's topped up.", "Mind the jet blast!", "Ramp is clear.", "Cargo door closed."],
+    spotters: ["Is that a 777?!", "Got the shot!", "Wait for the rotate...", "Registration noted.", "Hear that engine spool!"],
+    marshaller: {
+      parked: "Chocks in, engines off.",
+      "tug-in": "Tug's on the way.",
+      pushback: "Clear to push!",
+      "tug-off": "Tow bar off. Have a good one!",
+      start: "Engines starting!",
+      "taxi-out": "Have a great flight!",
+      gap: "Next one's coming in.",
+      "taxi-in": "Left a bit... more... STOP!",
+      shutdown: "Welcome in!",
+    },
+  };
+
+  // speakers(): candidates as [{ person: {x, feet}, h, lines: [...] or () => [...] }].
+  function createChatter({ host, canvas, speakers, every = [3.5, 7], hold = 3.2 }) {
+    const bubble = document.createElement("p");
+    bubble.className = "bubble";
+    bubble.setAttribute("aria-hidden", "true");
+    bubble.hidden = true;
+    host.append(bubble);
+
+    let timer = 1.5;
+    let current = null;
+    const recent = [];
+
+    const onScreen = (p, view) => p.x > view.cam + 6 && p.x + 14 < view.cam + view.viewW - 6;
+
+    function hide() {
+      bubble.hidden = true;
+      current = null;
+      timer = rand(...every);
+    }
+
+    // Keep the bubble inside the scene; the tail still points at the speaker.
+    function place(view, scale) {
+      const { person, h } = current;
+      const target = canvas.offsetLeft + (person.x + 8 - view.cam) * scale;
+      const half = bubble.offsetWidth / 2;
+      const left = Math.min(host.clientWidth - half - 4, Math.max(half + 4, target));
+      bubble.style.left = `${Math.round(left)}px`;
+      bubble.style.top = `${Math.round((person.feet - h - 3) * scale)}px`;
+      bubble.style.setProperty("--tail", `${Math.round(target - left)}px`);
+    }
+
+    function say(view, scale) {
+      const options = speakers().filter((s) => onScreen(s.person, view));
+      if (!options.length) {
+        timer = 1;
+        return;
+      }
+      const speaker = options[pick(options.length)];
+      const pool = typeof speaker.lines === "function" ? speaker.lines() : speaker.lines;
+      const fresh = pool.filter((l) => !recent.includes(l));
+      const from = fresh.length ? fresh : pool;
+      const line = from[pick(from.length)];
+      recent.push(line);
+      if (recent.length > 6) recent.shift();
+      bubble.textContent = line;
+      bubble.hidden = false;
+      current = { ...speaker, line };
+      timer = hold;
+      place(view, scale);
+    }
+
+    // active = false hides the bubble (e.g. the game's title screen or a dialog).
+    function update(dt, view, scale, active = true) {
+      if (!active) {
+        if (current) hide();
+        return;
+      }
+      timer -= dt;
+      if (current) {
+        if (timer <= 0 || !onScreen(current.person, view)) hide();
+        else place(view, scale);
+      } else if (timer <= 0) {
+        say(view, scale);
+      }
+    }
+
+    return { update, get line() { return current ? current.line : null; } };
+  }
+
   // Subpage scenes ---------------------------------------------------------
   // Each scene is 720x168 art pixels, drawn in layers. The static CSS-sprite
   // version in the HTML stays as the no-JS fallback and is hidden once live.
@@ -338,6 +447,7 @@ window.Airport = (() => {
         standers: [{ x: 380, feet: 121, row: 4 }, { x: 395, feet: 122, row: 1 }, { x: 452, feet: 124, row: 3, flip: true }],
       },
       layers: ["gate-sky", "@planes", "gate-apron", "@beacon:262,71", "gate-front", "@laptop:431,96,11,5", "@crowd"],
+      talk: ({ crowd }) => crowd.people.map((p) => ({ person: p, h: 20, lines: LINES.devs })),
     },
     window: {
       images: ["window-front", "traffic", "crowd-dark", "photographer"],
@@ -348,6 +458,10 @@ window.Airport = (() => {
         standers: [{ x: 470, feet: 131, row: 2 }, { x: 612, feet: 132, row: 5, flip: true }],
       },
       layers: ["@planes", "window-front", "@photographer:290,58", "@crowd"],
+      talk: ({ crowd }) => [
+        { person: { x: 284, feet: 120 }, h: 62, lines: LINES.photographers },
+        ...crowd.people.map((p) => ({ person: p, h: 20, lines: LINES.photographers })),
+      ],
     },
     apron: {
       images: ["apron-sky", "apron-apron", "apron-front", "traffic", "crew", "stand-plane", "tug", "marshaller"],
@@ -358,6 +472,11 @@ window.Airport = (() => {
       stand: { x: 300, y: 96, marshalX: 478, marshalFeet: 146 },
       spotters: [{ x: 96, feet: 167, row: 2 }, { x: 584, feet: 166, row: 2 }, { x: 660, feet: 167, row: 2, flip: true }],
       layers: ["apron-sky", "@planes", "apron-apron", "@stand", "@crowd", "apron-front", "@spotters", "@beacon:519,13"],
+      talk: ({ crowd, spotters, stand }) => [
+        { person: { x: 481, feet: 146 }, h: 24, lines: () => [LINES.marshaller[stand.state.phase]] },
+        ...crowd.people.map((p) => ({ person: p, h: 20, lines: LINES.groundCrew })),
+        ...spotters.people.map((p) => ({ person: p, h: 20, lines: LINES.spotters })),
+      ],
     },
   };
 
@@ -374,6 +493,7 @@ window.Airport = (() => {
     const crowd = createCrowd(config.crowd);
     const spotters = config.spotters ? createCrowd({ sheet: "crew", rows: 3, standers: config.spotters }) : null;
     const stand = config.stand ? createStand(config.stand) : null;
+    const chatter = createChatter({ host: el, canvas, speakers: () => config.talk({ crowd, spotters, stand }) });
     let img = null;
     let last = 0;
     let visible = true;
@@ -412,7 +532,8 @@ window.Airport = (() => {
       } else if (name === "photographer") {
         sprite(view, img.photographer, reduceMotion ? 0 : Math.floor(now / 2000) % 2, 26, 62, a, b, false);
       } else if (name === "stand") {
-        stand.draw(view, img);      }
+        stand.draw(view, img);
+      }
     }
 
     function draw() {
@@ -429,6 +550,7 @@ window.Airport = (() => {
         crowd.update(dt);
         if (stand) stand.update(dt, view);
       }
+      chatter.update(dt, view, scale);
       draw();
       if (visible) requestAnimationFrame(loop);
     }
@@ -464,6 +586,7 @@ window.Airport = (() => {
       planes: traffic.planes.map(describePlane),
       people: crowd.people.length + (spotters ? spotters.people.length : 0),
       walkers: crowd.people.filter((p) => p.v).map((p) => Math.round(p.x)),
+      line: chatter.line,
       ...traffic.stats,
       stand: stand && {
         phase: stand.state.phase, x: +stand.state.x.toFixed(2), tugX: stand.state.tugX === null ? null : +stand.state.tugX.toFixed(2),
@@ -474,5 +597,5 @@ window.Airport = (() => {
 
   document.querySelectorAll("[data-live]").forEach(mountScene);
 
-  return { PLANE_W, PLANE_H, reduceMotion, rand, loadImages, sprite, createTraffic, createCrowd, describePlane };
+  return { PLANE_W, PLANE_H, reduceMotion, rand, loadImages, sprite, createTraffic, createCrowd, createChatter, describePlane, LINES };
 })();

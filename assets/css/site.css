@@ -328,7 +328,13 @@ ul, ol { list-style: none; }
 @keyframes blink { 50% { opacity: 0.2; } }
 
 /* Split-flap tiles, built by board.js. */
-[data-flap] { white-space: nowrap; }
+/* Board text may wrap between words; each word (from board.js) stays whole. */
+[data-flap] { white-space: normal; }
+
+.word {
+  display: inline-block;
+  white-space: nowrap;
+}
 
 .tile {
   display: inline-block;
@@ -1425,3 +1431,98 @@ ul, ol { list-style: none; }
 }
 
 .scene.is-live .scene-inner { display: none; }
+
+/* Speech bubbles over the game and scenes (decorative, aria-hidden). */
+.bubble {
+  position: absolute;
+  z-index: 2;
+  max-width: min(220px, 70%);
+  margin: 0;
+  padding: 4px 8px 5px;
+  translate: -50% -100%;
+  background: #ffffff;
+  color: #111111;
+  box-shadow: 0 0 0 2px #111111, 4px 4px 0 2px rgb(0 0 0 / 0.35);
+  font: 400 1.125rem/1.05 var(--sans);
+  text-align: center;
+  pointer-events: none;
+}
+
+.bubble[hidden] { display: none; }
+
+/* Pixel tail pointing at the speaker (shifted by --tail when the bubble is nudged off an edge). */
+.bubble::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: calc(50% + var(--tail, 0px));
+  width: 6px;
+  height: 5px;
+  margin-left: -3px;
+  background: #ffffff;
+  box-shadow: -2px 0 0 #111111, 2px 0 0 #111111, 0 2px 0 #111111;
+}
+
+/* Flight deck stats on the Pilot page: instrument-style panels. */
+.gauge {
+  align-content: start;
+  background: var(--board);
+  box-shadow: inset 0 0 0 2px #3a3f48, inset 0 0 0 4px #000000;
+}
+
+.gauge-list {
+  display: grid;
+  gap: 6px;
+  font: 400 1.25rem/1.15 var(--sans);
+}
+
+.gauge-list li::before {
+  content: "\25B8  ";
+  color: var(--amber);
+}
+
+/* Page transition: the A320 flight deck loader (assets/js/transition.js). */
+.cockpit-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  overflow: hidden;
+  background: rgb(36 41 52);
+  transition: opacity 0.45s ease;
+}
+
+/* Full screen: centred and scaled by transition.js to cover the viewport. */
+.cockpit-loader canvas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  translate: -50% -50%;
+  image-rendering: pixelated;
+}
+
+.cockpit-loader.is-leaving { opacity: 0; }
+
+/* Caption sits on the cockpit along the bottom, over a dark fade. */
+.cockpit-caption {
+  position: absolute;
+  inset: auto 0 0;
+  margin: 0;
+  padding: 48px 16px max(18px, env(safe-area-inset-bottom));
+  background: linear-gradient(transparent, rgb(10 11 14 / 0.85) 55%);
+  text-align: center;
+  color: var(--ink);
+  font: 400 clamp(1.25rem, 2.4vw, 1.75rem)/1.2 var(--cond);
+  text-transform: uppercase;
+}
+
+.cockpit-caption .readout { color: var(--amber); margin-right: 8px; }
+
+/* Cover the page until transition.js takes over (set by the inline head script). */
+html.cockpit-arriving::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  background: rgb(36 41 52);
+}

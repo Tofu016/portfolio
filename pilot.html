@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Gate A3: Pilot | Cristopher Pondoc</title>
-  <meta name="description" content="Plane spotting log, flight simulator flying and crew card of Cristopher Pondoc, aviation enthusiast and photographer.">
-  <meta property="og:title" content="Gate A3: Pilot | Cristopher Pondoc">
+  <title>Gate A3: Aspiring Airline Pilot | Cristopher Pondoc</title>
+  <meta name="description" content="Plane spotting log, flight simulator flying and crew card of Cristopher Pondoc, aspiring airline pilot and photographer.">
+  <meta property="og:title" content="Gate A3: Aspiring Airline Pilot | Cristopher Pondoc">
   <meta property="og:description" content="Plane spotting log and flight sim.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://tofu016.github.io/portfolio/images/multimedia/samples/planes/a380.jpg">
@@ -14,6 +14,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Silkscreen:wght@400;700&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/site.css">
+  <!-- Arriving through the cockpit transition: start covered so the page doesn't flash
+       before transition.js opens it out. The timeout is a safety net if JS fails. -->
+  <script>
+    try {
+      if (sessionStorage.getItem("cp-arrive")) {
+        document.documentElement.classList.add("cockpit-arriving");
+        setTimeout(function () { document.documentElement.classList.remove("cockpit-arriving"); }, 2500);
+      }
+    } catch (e) {}
+  </script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -21,9 +31,9 @@
   <header class="signbar">
     <div class="wrap">
       <a class="back" href="index.html">&larr; Departures</a>
-      <span class="here"><span class="gate-chip">A3</span> Pilot</span>
+      <span class="here"><span class="gate-chip">A3</span> Aspiring Airline Pilot</span>
       <nav class="gates" aria-label="Other gates">
-        <a href="developer.html"><span class="gate-chip">D1</span> Developer &rarr;</a>
+        <a href="developer.html"><span class="gate-chip">D1</span> Full-Stack Developer &rarr;</a>
         <a href="photography.html"><span class="gate-chip">P2</span> Photography &rarr;</a>
       </nav>
       <button class="sfx-toggle" type="button" data-sfx-toggle aria-pressed="false" aria-label="Sound effects">&#9834; Off</button>
@@ -69,13 +79,13 @@
             <span class="readout">Character</span>
           </div>
           <div class="prose">
-            <p>I'm an aviation enthusiast who spends time by the runway with a camera, and the rest of it in the virtual cockpit.</p>
+            <p>I'm an aspiring airline pilot who spends time by the runway with a camera, and the rest of it in the virtual cockpit.</p>
             <p>Want to talk planes, photography or a project? Reach me on LinkedIn or GitHub.</p>
           </div>
         </div>
 
         <article class="crew" aria-label="Crew card">
-          <div class="crew-top"><span>Crew</span><span>CP 303</span></div>
+          <div class="crew-top"><span>Flight Crew</span><span>CP 303</span></div>
           <img src="images/face/face-2.jpg" width="497" height="673" alt="Cristopher Pondoc facing the camera, holding a Nikon camera with a long lens.">
           <dl>
             <div><dt>Name</dt><dd>Cristopher Pondoc</dd></div>
@@ -211,16 +221,41 @@
             <svg class="pict" viewBox="0 0 12 12" aria-hidden="true"><path d="M4 0h1v1h-1zM5 0h1v1h-1zM6 0h1v1h-1zM7 0h1v1h-1zM2 1h1v1h-1zM3 1h1v1h-1zM8 1h1v1h-1zM9 1h1v1h-1zM1 2h1v1h-1zM10 2h1v1h-1zM1 3h1v1h-1zM7 3h1v1h-1zM8 3h1v1h-1zM10 3h1v1h-1zM0 4h1v1h-1zM6 4h1v1h-1zM7 4h1v1h-1zM11 4h1v1h-1zM0 5h1v1h-1zM5 5h1v1h-1zM6 5h1v1h-1zM11 5h1v1h-1zM0 6h1v1h-1zM5 6h1v1h-1zM11 6h1v1h-1zM0 7h1v1h-1zM11 7h1v1h-1zM1 8h1v1h-1zM10 8h1v1h-1zM1 9h1v1h-1zM3 9h1v1h-1zM4 9h1v1h-1zM5 9h1v1h-1zM6 9h1v1h-1zM7 9h1v1h-1zM8 9h1v1h-1zM10 9h1v1h-1zM2 10h1v1h-1zM3 10h1v1h-1zM8 10h1v1h-1zM9 10h1v1h-1zM4 11h1v1h-1zM5 11h1v1h-1zM6 11h1v1h-1zM7 11h1v1h-1z"/></svg>
             Flight deck
           </h2>
-          <span class="readout">Stats ???</span>
+          <span class="readout">Stats</span>
         </div>
         <p class="prose lead-in">For now, all of my flying happens in a flight simulator.</p>
 
-        <!-- PLACEHOLDERS: fill in your sim details -->
         <ul class="gauges">
-          <li class="gauge placeholder"><span class="readout">Simulator</span><strong>???</strong><span class="readout ph-label">Placeholder</span></li>
-          <li class="gauge placeholder"><span class="readout">Favorite aircraft</span><strong>???</strong><span class="readout ph-label">Placeholder</span></li>
-          <li class="gauge placeholder"><span class="readout">Hours logged</span><strong>???</strong><span class="readout ph-label">Placeholder</span></li>
-          <li class="gauge placeholder"><span class="readout">Favorite route</span><strong>???</strong><span class="readout ph-label">Placeholder</span></li>
+          <li class="gauge">
+            <span class="readout">Simulators</span>
+            <ul class="gauge-list">
+              <li>Microsoft Flight Simulator 2020</li>
+              <li>X-Plane 11</li>
+              <li>Prepar3D v5</li>
+            </ul>
+          </li>
+          <li class="gauge">
+            <span class="readout">Favorite aircraft</span>
+            <ul class="gauge-list">
+              <li>Boeing 777-300ER</li>
+              <li>Airbus A350</li>
+              <li>Boeing 747-400</li>
+              <li>Airbus A380</li>
+            </ul>
+          </li>
+          <li class="gauge">
+            <span class="readout">Hours logged</span>
+            <strong>1,824</strong>
+            <span class="readout">flight hours</span>
+          </li>
+          <li class="gauge">
+            <span class="readout">Favorite routes</span>
+            <ul class="gauge-list">
+              <li>Manila &rarr; Singapore</li>
+              <li>Singapore &rarr; Hong Kong</li>
+              <li>Hong Kong &rarr; Tokyo</li>
+            </ul>
+          </li>
         </ul>
       </div>
     </section>
@@ -252,7 +287,7 @@
         <div class="connect">
           <a class="out" href="https://www.linkedin.com/in/cristopher-pondoc-b780ba2a8/" target="_blank" rel="noopener">LinkedIn <span class="arrow" aria-hidden="true">&nearr;</span></a>
           <a class="out" href="https://github.com/Tofu016" target="_blank" rel="noopener">GitHub <span class="arrow" aria-hidden="true">&nearr;</span></a>
-          <a href="developer.html"><span class="gate-chip">D1</span> Developer <span class="arrow" aria-hidden="true">&rarr;</span></a>
+          <a href="developer.html"><span class="gate-chip">D1</span> Full-Stack Developer <span class="arrow" aria-hidden="true">&rarr;</span></a>
           <a href="photography.html"><span class="gate-chip">P2</span> Photography <span class="arrow" aria-hidden="true">&rarr;</span></a>
         </div>
       </div>
@@ -285,6 +320,7 @@
   </dialog>
 
   <script src="assets/js/sfx.js"></script>
+  <script src="assets/js/transition.js"></script>
   <script src="assets/js/dialog.js"></script>
   <script src="assets/js/airport.js"></script>
   <script src="assets/js/gallery.js"></script>

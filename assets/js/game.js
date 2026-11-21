@@ -17,9 +17,9 @@
   // Positions must match tools/pixel/scenes.py (INFO_X and GATES).
   const ZONES = [
     { x: 520, kind: "desk", label: "Talk" },
-    { x: 760, kind: "gate", label: "Board", href: "developer.html", flight: "CP 101", dest: "DEVELOPER", gate: "D1" },
+    { x: 760, kind: "gate", label: "Board", href: "developer.html", flight: "CP 101", dest: "FULL-STACK DEVELOPER", gate: "D1" },
     { x: 1000, kind: "gate", label: "Board", href: "photography.html", flight: "CP 202", dest: "PHOTOGRAPHY", gate: "P2" },
-    { x: 1240, kind: "gate", label: "Board", href: "pilot.html", flight: "CP 303", dest: "PILOT", gate: "A3" },
+    { x: 1240, kind: "gate", label: "Board", href: "pilot.html", flight: "CP 303", dest: "ASPIRING AIRLINE PILOT", gate: "A3" },
   ];
 
   const $ = (sel) => root.querySelector(sel);
@@ -53,7 +53,33 @@
     standers: [[140, 132], [158, 132], [320, 132], [338, 132], [546, 126], [1132, 126]]
       .map(([x, feet], i) => ({ x, feet, row: i % 8, flip: i === 5 })),
   });
+  // Airline crews: two crews walking to and from the gates, plus crew waiting at gates.
+  // flight-crew.png rows: 0 captain, 1 first officer, 2 attendant (red), 3 attendant (navy).
+  const flightCrew = A.createCrowd({
+    sheet: "flight-crew",
+    rows: 4,
+    maxX: LEVEL_W,
+    groups: [
+      { rows: [0, 1, 2, 3], x: 260, feet: 149, v: 13, gap: 15 },
+      { rows: [1, 0, 3, 2], x: 1180, feet: 155, v: -12, gap: 15 },
+    ],
+    standers: [
+      { x: 806, feet: 128, row: 2 },
+      { x: 819, feet: 128, row: 3, flip: true },
+      { x: 1222, feet: 127, row: 0 },
+    ],
+  });
   const view = { ctx, cam: 0, viewW: 0 };
+
+  // Speech bubbles: travellers (kids are crowd rows 6-7) and crew (rows 0-1 pilots, 2-3 attendants).
+  const chatter = A.createChatter({
+    host: viewport,
+    canvas,
+    speakers: () => [
+      ...crowd.people.map((p) => ({ person: p, h: 20, lines: p.row >= 6 ? A.LINES.kids : A.LINES.travellers })),
+      ...flightCrew.people.map((p) => ({ person: p, h: 20, lines: p.row < 2 ? A.LINES.pilots : A.LINES.attendants })),
+    ],
+  });
 
   let scale = 2;
   let viewW = 0;
@@ -91,7 +117,7 @@
     ctx.drawImage(img["concourse-front"], cam, 0, viewW, H, 0, 0, viewW, H);
 
     // People and the player, nearest last.
-    const cast = crowd.cast(view, img);
+    const cast = [...crowd.cast(view, img), ...flightCrew.cast(view, img)];
     cast.push({ feet: FEET, draw: () => A.sprite(view, img.player, player.frame, 16, 32, player.x - 8, FEET - 32, player.dir < 0) });
     cast.sort((a, b) => a.feet - b.feet);
     cast.forEach((c) => c.draw());
@@ -111,7 +137,10 @@
     if (!reduceMotion) {
       traffic.update(dt, { cam, viewW });
       crowd.update(dt);
+      flightCrew.update(dt);
     }
+    // Only chat while you're playing (not on the title screen or during a dialog).
+    chatter.update(dt, { cam, viewW }, scale, state === "play");
 
     if (state !== "play") return;
 
@@ -251,12 +280,12 @@
       say([
         `Now boarding: flight ${zone.flight} to ${zone.dest}.`,
         `Please proceed to gate ${zone.gate}. Have a great trip!`,
-      ], { done: () => { location.href = zone.href; } });
+      ], { done: () => (window.cockpitLoader ? window.cockpitLoader.go(zone.href) : (location.href = zone.href)) });
       return;
     }
 
     say([
-      "Welcome to Terminal CP, the portfolio of Cristopher Pondoc: front-end developer, photographer and aviation enthusiast.",
+      "Welcome to Terminal CP, the portfolio of Cristopher Pondoc: full-stack developer, photographer and aspiring airline pilot.",
       "Gates D1, P2 and A3 are to your right. How can I help?",
     ], {
       choices: [
@@ -383,7 +412,7 @@
   }).observe(root);
 
   // Boot: load the art, swap the static fallback scene for the canvas.
-  A.loadImages(["concourse-sky", "concourse-apron", "concourse-front", "player", "crowd", "traffic"])
+  A.loadImages(["concourse-sky", "concourse-apron", "concourse-front", "player", "crowd", "flight-crew", "traffic"])
     .then((loaded) => {
       Object.assign(img, loaded);
       viewport.prepend(canvas);
@@ -403,7 +432,9 @@
     state, x: Math.round(player.x), cam, near: near?.gate || near?.kind || null, scale, viewW,
     planes: traffic.planes.map(A.describePlane),
     taxi: Math.round(traffic.taxi.x),
-    people: crowd.people.length,
+    people: crowd.people.length + flightCrew.people.length,
+    crew: flightCrew.people.map((p) => Math.round(p.x)),
+    line: chatter.line,
     walkers: crowd.people.filter((p) => p.v).map((p) => Math.round(p.x)),
     ...traffic.stats,
   });

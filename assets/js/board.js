@@ -16,11 +16,25 @@ function buildTiles(el) {
   el.textContent = "";
   el.append(tiles);
 
+  // Each word's tiles sit in an unbreakable group, so on narrow screens a long
+  // destination ("ASPIRING AIRLINE") wraps between words, never mid-word.
+  let word = null;
   return [...text].map((char) => {
     const tile = document.createElement("span");
     tile.className = "tile";
-    tile.textContent = char === " " ? " " : char;
-    tiles.append(tile);
+    if (char === " ") {
+      tile.textContent = " ";
+      tiles.append(tile);
+      word = null;
+    } else {
+      if (!word) {
+        word = document.createElement("span");
+        word.className = "word";
+        tiles.append(word);
+      }
+      tile.textContent = char;
+      word.append(tile);
+    }
     return { tile, char };
   });
 }

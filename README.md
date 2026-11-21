@@ -5,7 +5,7 @@ A pixel-art airport portfolio, loosely inspired by the interior of NAIA Terminal
 Built with plain HTML, CSS and JavaScript, so there is no build step. Open `index.html` or serve the folder with any static server.
 
 - `index.html`: main page (about, departures board, contact)
-- `developer.html`: gate D1, projects, tech stack, certifications
+- `developer.html`: gate D1 (full-stack developer), projects, tech stack, certifications
 - `photography.html`: gate P2, landscape gallery, editing software
 - `pilot.html`: gate A3, crew card, spotting log, flight sim, flight training
 - `assets/css/site.css`: shared styles

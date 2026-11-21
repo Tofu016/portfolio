@@ -14,6 +14,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Silkscreen:wght@400;700&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/site.css">
+  <!-- Arriving through the cockpit transition: start covered so the page doesn't flash
+       before transition.js opens it out. The timeout is a safety net if JS fails. -->
+  <script>
+    try {
+      if (sessionStorage.getItem("cp-arrive")) {
+        document.documentElement.classList.add("cockpit-arriving");
+        setTimeout(function () { document.documentElement.classList.remove("cockpit-arriving"); }, 2500);
+      }
+    } catch (e) {}
+  </script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -23,7 +33,7 @@
       <a class="back" href="index.html">&larr; Departures</a>
       <span class="here"><span class="gate-chip">P2</span> Photography</span>
       <nav class="gates" aria-label="Other gates">
-        <a href="developer.html"><span class="gate-chip">D1</span> Developer &rarr;</a>
+        <a href="developer.html"><span class="gate-chip">D1</span> Full-Stack Developer &rarr;</a>
         <a href="pilot.html"><span class="gate-chip">A3</span> Pilot &rarr;</a>
       </nav>
       <button class="sfx-toggle" type="button" data-sfx-toggle aria-pressed="false" aria-label="Sound effects">&#9834; Off</button>
@@ -158,8 +168,8 @@
         <div class="connect">
           <a class="out" href="https://www.linkedin.com/in/cristopher-pondoc-b780ba2a8/" target="_blank" rel="noopener">LinkedIn <span class="arrow" aria-hidden="true">&nearr;</span></a>
           <a class="out" href="https://github.com/Tofu016" target="_blank" rel="noopener">GitHub <span class="arrow" aria-hidden="true">&nearr;</span></a>
-          <a href="developer.html"><span class="gate-chip">D1</span> Developer <span class="arrow" aria-hidden="true">&rarr;</span></a>
-          <a href="pilot.html"><span class="gate-chip">A3</span> Pilot <span class="arrow" aria-hidden="true">&rarr;</span></a>
+          <a href="developer.html"><span class="gate-chip">D1</span> Full-Stack Developer <span class="arrow" aria-hidden="true">&rarr;</span></a>
+          <a href="pilot.html"><span class="gate-chip">A3</span> Aspiring Airline Pilot <span class="arrow" aria-hidden="true">&rarr;</span></a>
         </div>
       </div>
     </section>
@@ -191,6 +201,7 @@
   </dialog>
 
   <script src="assets/js/sfx.js"></script>
+  <script src="assets/js/transition.js"></script>
   <script src="assets/js/dialog.js"></script>
   <script src="assets/js/airport.js"></script>
   <script src="assets/js/gallery.js"></script>

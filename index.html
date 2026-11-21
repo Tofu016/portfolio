@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Cristopher Pondoc | Developer, Photographer &amp; Aviation Enthusiast</title>
-  <meta name="description" content="Portfolio of Cristopher Pondoc: front-end developer, photographer and aviation enthusiast.">
+  <title>Cristopher Pondoc | Full-Stack Developer, Photographer &amp; Aspiring Airline Pilot</title>
+  <meta name="description" content="Portfolio of Cristopher Pondoc: full-stack developer, photographer and aspiring airline pilot.">
   <meta property="og:title" content="Cristopher Pondoc | Departures">
-  <meta property="og:description" content="Front-end development, photography and aviation.">
+  <meta property="og:description" content="Full-stack development, photography and aviation.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://tofu016.github.io/portfolio/images/multimedia/samples/planes/PAL.jpg">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
@@ -14,6 +14,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Silkscreen:wght@400;700&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/site.css">
+  <!-- Arriving through the cockpit transition: start covered so the page doesn't flash
+       before transition.js opens it out. The timeout is a safety net if JS fails. -->
+  <script>
+    try {
+      if (sessionStorage.getItem("cp-arrive")) {
+        document.documentElement.classList.add("cockpit-arriving");
+        setTimeout(function () { document.documentElement.classList.remove("cockpit-arriving"); }, 2500);
+      }
+    } catch (e) {}
+  </script>
 </head>
 <body>
   <a class="skip" href="#departures">Skip the game</a>
@@ -94,9 +104,10 @@
 
         <ul class="board-rows">
           <li>
-            <a class="flight" href="developer.html" aria-label="Developer: projects, stack and certifications. Gate D1, boarding.">
+            <a class="flight" href="developer.html" aria-label="Full-stack developer: projects, stack and certifications. Gate D1, boarding.">
               <span class="f-no" data-flap>CP 101</span>
               <span class="f-dest">
+                <span data-flap>FULL-STACK</span>
                 <span data-flap>DEVELOPER</span>
                 <span class="f-sub readout">Projects / Stack / Certifications</span>
               </span>
@@ -118,9 +129,10 @@
             </a>
           </li>
           <li>
-            <a class="flight" href="pilot.html" aria-label="Pilot: spotting log, flight sim and crew card. Gate A3, sim only.">
+            <a class="flight" href="pilot.html" aria-label="Aspiring airline pilot: spotting log, flight sim and crew card. Gate A3, sim only.">
               <span class="f-no" data-flap>CP 303</span>
               <span class="f-dest">
+                <span data-flap>ASPIRING AIRLINE</span>
                 <span data-flap>PILOT</span>
                 <span class="f-sub readout">Spotting log / Flight sim / Crew card</span>
               </span>
@@ -143,7 +155,7 @@
         </div>
         <div class="about-grid">
           <div class="prose">
-            <p>I'm studying for a Bachelor of Science in Information Technology at St. Dominic College of Asia and working toward a career in front-end development. I design, build and animate websites, and I've learned most of what I know by building things and pushing myself to the limit.</p>
+            <p>I'm studying for a Bachelor of Science in Information Technology at St. Dominic College of Asia and working toward a career in full-stack development. I design, build and animate websites, and I've learned most of what I know by building things and pushing myself to the limit.</p>
             <p>Alongside HTML, CSS and JavaScript, I also work with Java, C and Dart.</p>
           </div>
           <div class="prose">
@@ -174,6 +186,7 @@
   </footer>
 
   <script src="assets/js/sfx.js"></script>
+  <script src="assets/js/transition.js"></script>
   <script src="assets/js/board.js"></script>
   <script src="assets/js/airport.js"></script>
   <script src="assets/js/game.js"></script>

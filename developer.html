@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Gate D1: Developer | Cristopher Pondoc</title>
-  <meta name="description" content="Projects, tech stack and certifications from Cristopher Pondoc, a front-end developer and BS Information Technology student.">
-  <meta property="og:title" content="Gate D1: Developer | Cristopher Pondoc">
+  <title>Gate D1: Full-Stack Developer | Cristopher Pondoc</title>
+  <meta name="description" content="Projects, tech stack and certifications from Cristopher Pondoc, a full-stack developer and BS Information Technology student.">
+  <meta property="og:title" content="Gate D1: Full-Stack Developer | Cristopher Pondoc">
   <meta property="og:description" content="Projects, tech stack and certifications.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://tofu016.github.io/portfolio/images/multimedia/samples/planes/PAL.jpg">
@@ -14,6 +14,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Silkscreen:wght@400;700&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/site.css">
+  <!-- Arriving through the cockpit transition: start covered so the page doesn't flash
+       before transition.js opens it out. The timeout is a safety net if JS fails. -->
+  <script>
+    try {
+      if (sessionStorage.getItem("cp-arrive")) {
+        document.documentElement.classList.add("cockpit-arriving");
+        setTimeout(function () { document.documentElement.classList.remove("cockpit-arriving"); }, 2500);
+      }
+    } catch (e) {}
+  </script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -21,7 +31,7 @@
   <header class="signbar">
     <div class="wrap">
       <a class="back" href="index.html">&larr; Departures</a>
-      <span class="here"><span class="gate-chip">D1</span> Developer</span>
+      <span class="here"><span class="gate-chip">D1</span> Full-Stack Developer</span>
       <nav class="gates" aria-label="Other gates">
         <a href="photography.html"><span class="gate-chip">P2</span> Photography &rarr;</a>
         <a href="pilot.html"><span class="gate-chip">A3</span> Pilot &rarr;</a>
@@ -48,7 +58,7 @@
           <div>
             <p class="speaker readout">Cristopher</p>
             <h1 data-type>I build websites that look good and work well.</h1>
-            <p>Front-end developer and BS Information Technology student, focused on HTML, CSS and JavaScript.</p>
+            <p>Full-stack developer and BS Information Technology student, working across HTML, CSS and JavaScript on the front end and Node.js, Express, MongoDB and Firebase on the back end.</p>
           </div>
         </div>
       </div>
@@ -164,7 +174,7 @@
           <a class="out" href="https://www.linkedin.com/in/cristopher-pondoc-b780ba2a8/" target="_blank" rel="noopener">LinkedIn <span class="arrow" aria-hidden="true">&nearr;</span></a>
           <a class="out" href="https://github.com/Tofu016" target="_blank" rel="noopener">GitHub <span class="arrow" aria-hidden="true">&nearr;</span></a>
           <a href="photography.html"><span class="gate-chip">P2</span> Photography <span class="arrow" aria-hidden="true">&rarr;</span></a>
-          <a href="pilot.html"><span class="gate-chip">A3</span> Pilot <span class="arrow" aria-hidden="true">&rarr;</span></a>
+          <a href="pilot.html"><span class="gate-chip">A3</span> Aspiring Airline Pilot <span class="arrow" aria-hidden="true">&rarr;</span></a>
         </div>
       </div>
     </section>
@@ -177,6 +187,7 @@
     </div>
   </footer>
   <script src="assets/js/sfx.js"></script>
+  <script src="assets/js/transition.js"></script>
   <script src="assets/js/dialog.js"></script>
   <script src="assets/js/airport.js"></script>
 </body>
